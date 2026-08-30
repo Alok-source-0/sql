@@ -1,0 +1,36 @@
+Select null E2E_TRANSACTION_ID, sysdate TRANSACTION_DATE,b.inventory_org_id ORGANIZATION_ID, c.organization_name ORGANIZATION_CODE,
+(select inventory_item_id from apps.mtl_system_items where segment1 = b.item_code and organization_id = c.organization_id)ITEM_ID, b.item_code ITEM_CODE,
+a.location_code SUBINVENTORY_CODE, 'WMS' TRAN_SRC_APPLICATION, 0 DOCUMENT_NUMBER, 0 DOCUMENT_LINE_NUMBER, sysdate CREATION_DATE, null CREATED_BY,
+null LAST_UPDATE_DATE, null LAST_UPDATE_LOGIN, null LAST_UPDATED_BY, null SPARE_FLAG, null TRANSACTION_SRC_TYPE, b.LOT_NUMBER LOT_NUMBER,
+b.asset_num ASSET_NUMBER, b.SERIAL_NO SERIAL_NUMBER, null UNIVERSAL_IDENTIFIER, null ASSET_SITE_LOCATION, null LOCATOR_ID,
+null LOCATOR_CONCAT_SEGMENT, null REF_SERIAL_NUMBER, 'Yes' ATTRIBUTE1,
+null ATTRIBUTE2, null ATTRIBUTE3, null ATTRIBUTE4, null ATTRIBUTE5,
+null ATTRIBUTE6, null ATTRIBUTE7, null ATTRIBUTE8, null ATTRIBUTE9, null ATTRIBUTE10, null ATTRIBUTE11,
+null ATTRIBUTE12, null ATTRIBUTE13, null ATTRIBUTE14, null ATTRIBUTE15, null ATTRIBUTE16,
+null ATTRIBUTE17, null ATTRIBUTE18, null ATTRIBUTE19, null ATTRIBUTE20,
+'SHIPMENT RECEIVED' STATUS, null PARENT_SERIAL_NUMBER,null ITEM_TYPE,
+(select inventory_item_id from apps.mtl_system_items where segment1 = b.item_code and organization_id = c.organization_id) PARENT_ITEM_ID, b.item_code PARENT_ITEM_CODE
+from apps.BTVL_SRN_IN_STG_TAB a, apps.btvl_cam_detail_tab b, apps.org_organization_definitions c
+where a.det_txn_id = b.det_txn_id and b.inventory_org_id = c.organization_id
+and form_number in ('SRN1','SRN2','......') 
+--put the SRN in ('SRN1','SRN2','......')
+and process_flag = 'I'
+union
+Select null E2E_TRANSACTION_ID, sysdate TRANSACTION_DATE,b.inventory_org_id ORGANIZATION_ID, c.organization_name ORGANIZATION_CODE,
+(select inventory_item_id from apps.mtl_system_items where segment1 = b.item and organization_id = c.organization_id)ITEM_ID, b.item ITEM_CODE,
+a.location_code SUBINVENTORY_CODE, 'WMS' TRAN_SRC_APPLICATION, 0 DOCUMENT_NUMBER, 0 DOCUMENT_LINE_NUMBER, sysdate CREATION_DATE, null CREATED_BY,
+null LAST_UPDATE_DATE, null LAST_UPDATE_LOGIN, null LAST_UPDATED_BY, null SPARE_FLAG, null TRANSACTION_SRC_TYPE, b.LOT_NUMBER LOT_NUMBER,
+b.asset_number ASSET_NUMBER, b.SERIAL_NUMBER SERIAL_NUMBER, null UNIVERSAL_IDENTIFIER, null ASSET_SITE_LOCATION, null LOCATOR_ID,
+null LOCATOR_CONCAT_SEGMENT, null REF_SERIAL_NUMBER, 'Yes' ATTRIBUTE1,
+null ATTRIBUTE2, null ATTRIBUTE3, null ATTRIBUTE4, null ATTRIBUTE5,
+null ATTRIBUTE6, null ATTRIBUTE7, null ATTRIBUTE8, null ATTRIBUTE9, null ATTRIBUTE10, null ATTRIBUTE11,
+null ATTRIBUTE12, null ATTRIBUTE13, null ATTRIBUTE14, null ATTRIBUTE15, null ATTRIBUTE16,
+null ATTRIBUTE17, null ATTRIBUTE18, null ATTRIBUTE19, null ATTRIBUTE20,
+'SHIPMENT RECEIVED' STATUS, null PARENT_SERIAL_NUMBER,null ITEM_TYPE,
+(select inventory_item_id from apps.mtl_system_items where segment1 = b.item and organization_id = c.organization_id) PARENT_ITEM_ID, b.item PARENT_ITEM_CODE
+from apps.BTVL_SRN_IN_STG_TAB a, APPS.btvl_cam_detail_descrep_tab b, apps.org_organization_definitions c
+where a.det_txn_id = b.txn_id and b.inventory_org_id = c.organization_id
+and form_number in ('SRN1','SRN2','......')
+--put the SRN in ('SRN1','SRN2','......')
+and process_flag = 'I';
+ -- put the output in Airtel E2E Insert Webadi and chnge lot to SRN and upload
